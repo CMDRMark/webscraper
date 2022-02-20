@@ -8,7 +8,8 @@ from selenium.webdriver.common.by import By
 
 
 file_name_cat = ['Биология', 'Военное дело', 'Горная промышленность', 'Государство и право', 'Книги для детей и подростков', 'Дом. Досуг. Хобби', 'Естественные науки в целом', 'Жилищно-коммунальное хозяйство. Бытовое обслуживание', 'Здравоохранение. Медицина', 'Искусство', 'Использование атомной энергии. Ядерная техника', 'История', 'Космос', 'Культура. Библиотечное дело. Музееведение', 'Легкая промышленность', 'Лесная, деревообрабатывающая, лесохимическая, целлюлозно-бумажная промышленность', 'Лесное хозяйство. Водное хозяйство.Рыбное хозяйство', 'Литература универсального содержания', 'Машиностроение. Приборостроение', 'Металлургия', 'Наука. Науковедение. Кибернетика. Семиотика. Информатика', 'Науки о земле', 'Некнижные товары', 'Образование. Учебная литература', 'Общественные науки в целом. Социология', 'Пищевая промышленность', 'Полиграфия. Репрография. Кинофототехника', 'Политика', 'Промышленность в целом', 'Психология', 'Радиоэлектроника. Связь', 'Сельское хозяйство', 'Средства массовой информации', 'Демография. Статистика', 'Строительство','Технические науки', 'Транспорт','Путешествия. Карты', 'Физико-математические науки', 'Физическая культура. Спорт', 'Филологические науки', 'Философия и религия', 'Химическая промышленность', 'Химия', 'Художественная литература', 'Эзотерика. Самопознание',
-                 'Бизнес и финансы', 'Энергетика']
+                 'Бизнес и финансы', 'Энергетика'] # import file with categories that was created before
+
 chrome_options = Options()
 chrome_options.add_argument("--headless")
 chrome_options.add_argument("--disable-gpu")
@@ -29,7 +30,7 @@ def get_content(html):
         except:
             author = "Автор не указан"
         try:
-            pub = driver.find_element(By.XPATH, "//*[text()='Издательство:']//parent::li")
+            pub = driver.find_element(By.XPATH, "//*[text()='Издательство:']//parent::li")  #find element next to the text block
             publisher = pub.find_element(By.XPATH, '//*[@id="description"]/div/ul/li[6]/span[2]').text.strip()
         except:
             publisher = "Издатель не указан"
@@ -43,14 +44,14 @@ def get_content(html):
         print(len(BOOKS))
     else:
         pass
-def save_file(items, path):
+def save_file(items, path):   #creating a table with our data
     with open(path, 'w+', newline='', encoding='utf-8-sig') as file:
         writer = csv.writer(file, delimiter=';')
         writer.writerow(['Название', 'Автор', 'Жанр', 'Издательство'])
         for item in items:
             writer.writerow([item['title'], item['author'], item['genre'], item['publisher']])
 
-for block in itertools.islice(file_name_cat, 35, 49):
+for block in itertools.islice(file_name_cat, 35, 49):   #35, 49 represent the interva of categories that you'd like to scrape
     each_dict = ("('Links for', '" + str(block) + "')")
     with open(str(each_dict) ,'rb') as f:
         URL = pickle.load(f)

@@ -11,18 +11,18 @@ chrome_options = Options()
 BOOKS = []
 file_name_cat = ['Классическая литература','Современная проза','Отечественные','Зарубежные','Иронические детективы','Отечественная фантастика','Зарубежная фантастика','Отечественное фэнтези','Зарубежное фэнтези','Ужасы','Фантастический боевик','Российские','Зарубежные','Исторические','Поэзия','Драматургия','Публицистика','Биографии','Мемуары','Хроники событий. Дневники','Исторические романы','Приключения','Комиксы и манга','Юмор','Афоризмы. цитаты','Мифы. Легенды. Эпос','Сказки',
                  'Пословицы. Поговорки. Загадки','Прочие издания']
-print((len(file_name_cat)))
 
-print(len(file_name_cat))
 chrome_options.add_argument("--headless")
 chrome_options.add_argument("--disable-gpu")
-driver = webdriver.Chrome("/Users/arman1/Library/Mobile Documents/com~apple~CloudDocs/Python Projects/chromedriver", options=chrome_options)
+driver = webdriver.Chrome("/PATH TO chromedriver", options=chrome_options)
 
 def get_content(html):
     global BOOKS
     driver.get(html)
     try:
-        WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "a.collapsed"))).click()
+        WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "a.collapsed"))).click() #Waiting for JS interaction, after which 
+        #object becomes interractable to reveal more content
+        
         title = driver.find_element(By.XPATH, '//*[@id="productMain"]/div[2]/div/p[1]/following-sibling::h1').text.strip()
         author = driver.find_element(By.XPATH, '//*[@id="productMain"]/div[2]/div/p[1]/a').text.strip()
         genre = driver.find_element(By.XPATH, '//*[@id="content"]/div/div/div[1]/nav/ol/li[2]/a').text.strip()
@@ -49,7 +49,6 @@ def save_file(items, path):
         for item in items:
             writer.writerow([item['title'], item['author'], item['genre'], item['publisher']])
 
-file_name_cat = ['Классическая литература','Современная проза','Отечественные','Зарубежные','Иронические детективы','Отечественная фантастика','Зарубежная фантастика','Отечественное фэнтези','Зарубежное фэнтези','Ужасы','Фантастический боевик','Российские','Зарубежные','Исторические','Поэзия','Драматургия','Публицистика','Биографии','Мемуары','Хроники событий. Дневники','Исторические романы','Приключения','Комиксы и манга','Юмор','Афоризмы. цитаты','Мифы. Легенды. Эпос','Сказки','Пословицы. Поговорки. Загадки','Прочие издания']
 for block in itertools.islice(file_name_cat, 26, 29):
     each_dict = ("BG/('Links for', '" + str(block) + "')")
     print(block)

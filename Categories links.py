@@ -40,38 +40,3 @@ print (Links)
 file = open("Links_mdk_cat", 'wb')
 pickle.dump(Links, file)
 file.close()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Links = []
-
-
-
-
-
-
-
-
-
-
-
-
-
-# file = open("Links", 'wb')
-# pickle.dump(Links, file)
-# file.close()
